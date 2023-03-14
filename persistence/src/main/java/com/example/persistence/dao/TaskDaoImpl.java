@@ -1,12 +1,10 @@
 package com.example.persistence.dao;
 
 import com.example.persistence.base.exception.CustomException;
+import com.example.persistence.base.util.Print;
 import com.example.persistence.domain.Task;
 import com.example.persistence.repository.TaskRepository;
-import com.example.persistence.rest.dto.ReqTaskUpdateDTO;
-import com.example.persistence.rest.dto.ResTaskGetListDTO;
-import com.example.persistence.rest.dto.ResTaskGetOneDTO;
-import com.example.persistence.rest.dto.ResTaskGetPageDTO;
+import com.example.persistence.rest.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -35,13 +33,13 @@ public class TaskDaoImpl implements TaskDao {
     }
 
     @Override
-    public Boolean save(Task entity) {
+    public Task save(Task entity) {
         try {
             entityRepository.saveAndFlush(entity);
-            return true;
+            return entity;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 
@@ -57,14 +55,19 @@ public class TaskDaoImpl implements TaskDao {
     }
 
     @Override
-    public Boolean updateMyTask(String id, ReqTaskUpdateDTO entity) {
-        Optional<Integer> optionalInteger = entityRepository.updateMyTask(id, entity.getDescription(), entity.getComment(), entity.getTaskStatus());
+    public List<TaskGetListDTO> getListByCategoryId(Long categoryId) throws CustomException {
+        return entityRepository.getListByCategoryId(categoryId).orElseThrow(() -> new CustomException("دیتا یافت نشد"));
+    }
+
+    @Override
+    public Boolean updateMyTask(Long id, ReqTaskUpdateDTO entity) {
+        Optional<Integer> optionalInteger = entityRepository.updateMyTask(id, entity.getTitle(), entity.getDescription(), entity.getComment(), entity.getTaskStatus());
         return optionalInteger.isPresent() && optionalInteger.get() > 0;
     }
 
     @Override
-    public List<ResTaskGetListDTO> getListMyTask(String userId) throws CustomException {
-        return entityRepository.getListMyTask(userId).orElseThrow(() -> new CustomException("دیتا یافت نشد"));
+    public List<ResTaskGetListDTO> getListMyTask(Long categoryId, Long userId) throws CustomException {
+        return entityRepository.getListMyTask(categoryId, userId).orElseThrow(() -> new CustomException("دیتا یافت نشد"));
     }
 
     @Override
@@ -79,8 +82,8 @@ public class TaskDaoImpl implements TaskDao {
     }
 
     @Override
-    public List<ResTaskGetListDTO> getListByTermAsDTO(String term, Integer limit) throws CustomException {
-        return entityRepository.getListByTermAsDTO(term, limit).orElseThrow(() -> new CustomException("دیتا یافت نشد"));
+    public List<Task> getListByTermAsDTO() throws CustomException {
+        return entityRepository.getListTask();
     }
 
     @Override
