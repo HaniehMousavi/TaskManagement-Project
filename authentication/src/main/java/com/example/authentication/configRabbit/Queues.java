@@ -14,6 +14,8 @@ public class Queues {
 
     public static final String USER_SIGNUP = "UserSignup";
     public static final String USER_SIGN_IN = "UserSignIn";
+    public static final String GET_LIST = "getList";
+    public static final String UPDATE_USER = "updateUser";
 
 
     public static String queueName = "crateQueue";

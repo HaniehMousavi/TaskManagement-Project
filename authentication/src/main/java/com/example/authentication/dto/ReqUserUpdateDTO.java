@@ -13,7 +13,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReqUserUpdateDTO {
-
     private String firstName;
 
     private String lastName;

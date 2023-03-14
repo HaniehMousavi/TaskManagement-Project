@@ -17,9 +17,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE User " +
+    @Query(value = "UPDATE user_management.Users " +
             "SET firstName = :firstName, lastName = :lastName, username = :username, password = :password " +
-            "WHERE id = :id ")
+            "WHERE id = :id ",nativeQuery = true)
     Optional<Integer> update(@Param("id") String id,
                              @Param("firstName") String firstName,
                              @Param("lastName") String lastName,
@@ -44,14 +44,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUsername(String username);
 
-
-
-//    @Query(" SELECT u.userType as userType " +
-//            "FROM User AS u " +
-//            "WHERE u. id = :id ")
-//    UserType getUserType(@Param("id") String id);
-//
-//    Optional<ResUserGetListDTO> getListById(String userId);
 
 }
 

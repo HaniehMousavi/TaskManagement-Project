@@ -5,6 +5,10 @@ import com.example.authentication.domain.AuthenticationResponse;
 import com.example.authentication.base.exception.CustomException;
 import com.example.authentication.base.response.ResourceResponse;
 import com.example.authentication.domain.User;
+import com.example.authentication.dto.ReqUserUpdateDTO;
+import com.example.authentication.dto.ResUserGetListDTO;
+
+import java.util.List;
 
 
 public interface UserService {
@@ -13,9 +17,9 @@ public interface UserService {
 
     AuthenticationResponse authenticate(AuthenticationRequest request) throws CustomException;
 
-//    Boolean update(String id, ReqUserUpdateDTO entity);
+    Boolean update(String id, ReqUserUpdateDTO entity);
 
-//    List<ResUserGetListDTO> getList(String userId);
+    List<User> getList() throws CustomException;
 
 }
 
