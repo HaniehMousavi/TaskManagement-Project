@@ -2,6 +2,7 @@ package com.example.authentication.repository.user;
 
 
 import com.example.authentication.domain.User;
+import com.example.authentication.dto.ResUserGetListDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -17,9 +19,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE User " +
+    @Query(value = "UPDATE user_management.Users " +
             "SET firstName = :firstName, lastName = :lastName, username = :username, password = :password " +
-            "WHERE id = :id ")
+            "WHERE id = :id ",nativeQuery = true)
     Optional<Integer> update(@Param("id") String id,
                              @Param("firstName") String firstName,
                              @Param("lastName") String lastName,
@@ -46,12 +48,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
 
-//    @Query(" SELECT u.userType as userType " +
+    //    @Query(" SELECT u.userType as userType " +
 //            "FROM User AS u " +
 //            "WHERE u. id = :id ")
 //    UserType getUserType(@Param("id") String id);
 //
-//    Optional<ResUserGetListDTO> getListById(String userId);
 
 }
 

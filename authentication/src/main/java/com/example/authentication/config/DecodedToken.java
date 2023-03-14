@@ -1,9 +1,8 @@
-package com.example.persistence.base.util;
+package com.example.authentication.config;
 
+import org.apache.commons.codec.binary.Base64;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.apache.commons.codec.binary.Base64;
-
 import java.io.UnsupportedEncodingException;
 
 public class DecodedToken {

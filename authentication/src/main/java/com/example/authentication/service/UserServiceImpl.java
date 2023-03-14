@@ -1,5 +1,7 @@
 package com.example.authentication.service;
 
+import com.example.authentication.config.JwtTokenUtil;
+import com.example.authentication.dao.UserDao;
 import com.example.authentication.domain.AuthenticationRequest;
 import com.example.authentication.domain.AuthenticationResponse;
 import com.example.authentication.base.exception.CustomException;
@@ -8,18 +10,18 @@ import com.example.authentication.base.util.Print;
 import com.example.authentication.config.JwtService;
 import com.example.authentication.domain.Role;
 import com.example.authentication.domain.User;
+import com.example.authentication.dto.ReqUserUpdateDTO;
+import com.example.authentication.dto.ResUserGetListDTO;
 import com.example.authentication.repository.RoleRepository;
 import com.example.authentication.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 
 @Service
@@ -30,6 +32,8 @@ public class UserServiceImpl implements UserService {
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final JwtTokenUtil  jwtTokenUtil;
+    private final UserDao userDao;
 
     @Override
     public ResourceResponse<User> createUser(String role, User user) throws CustomException {
@@ -63,30 +67,22 @@ public class UserServiceImpl implements UserService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         User user = entityRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new CustomException("No user found with username.. "));
-        String jwtToken = jwtService.generateToken(user);
+        Print.print("user",user);
+        UserDetails userDetails = null;
+//        String jwtToken = jwtService.generateTokenB(user,userDetails);
+        String jwtToken = jwtTokenUtil.generateToken(user,userDetails);
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
 
+        @Override
+    public Boolean update(String userId, ReqUserUpdateDTO entity) {
+        return userDao.update(userId, entity);
+    }
 
-
-
-
-
-
-
-
-
-
-
-//        @Override
-//    public Boolean update(String userId, ReqUserUpdateDTO entity) {
-//        return entityDao.update(userId, entity);
-//    }
-//
-//    @Override
-//    public List<ResUserGetListDTO> getList(String userId) {
-//        return entityDao.getList(userId);
-//    }
+    @Override
+    public List<User> getList() throws CustomException {
+        return userDao.getList();
+    }
 
 }
 
