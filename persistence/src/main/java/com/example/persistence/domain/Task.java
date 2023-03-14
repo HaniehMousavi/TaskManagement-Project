@@ -33,7 +33,7 @@ public class Task {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "taskStatus")
-    private TaskStatus taskStatus;
+    private TaskStatus taskStatus = TaskStatus.PENDING;
 
     public Task(String title, String description, String comment, TaskStatus taskStatus, User user) {
         this.title = title;
@@ -45,12 +45,16 @@ public class Task {
 
 
     public enum TaskStatus {
+        PENDING,
         DOING,
         FINISHED
     }
 
     @ManyToOne()
     private User user;
+
+    @ManyToOne()
+    private Category category;
 
 //    @LazyCollection(LazyCollectionOption.FALSE)
 //    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

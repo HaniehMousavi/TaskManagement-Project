@@ -22,19 +22,19 @@ public class TaskConsumer {
 
     @SendTo
     @RabbitListener(queues = CREATE_TASK, returnExceptions = "true")
-    public ResponseEntity<Boolean> create(Task entity) throws CustomException {
+    public ResponseEntity<Task> create(Task entity) throws CustomException {
         return ResponseEntity.ok().body(entityService.create(entity));
     }
 
     @SendTo
     @RabbitListener(queues = UPDATE_BY_ADMIN, returnExceptions = "true")
-    public ResponseEntity<Boolean> updateByAdmin(String id, ReqTaskUpdateDTO entity) throws CustomException {
+    public ResponseEntity<Boolean> updateByAdmin(Long id, ReqTaskUpdateDTO entity) throws CustomException {
         return ResponseEntity.ok().body(entityService.update(id, entity));
     }
 
     @SendTo
     @RabbitListener(queues = UPDATE_TASK_BY_USER, returnExceptions = "true")
-    public ResponseEntity<Boolean> updateTaskByUser(String id, ReqTaskUpdateDTO entity) throws CustomException {
+    public ResponseEntity<Boolean> updateTaskByUser(Long id, ReqTaskUpdateDTO entity) throws CustomException {
         return ResponseEntity.ok().body(entityService.updateTaskByUser(id, entity));
     }
 

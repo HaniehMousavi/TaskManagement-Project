@@ -3,7 +3,7 @@ package com.example.persistence.rest.dto;
 
 
 public interface ResTaskGetOneDTO {
-    String getId();
+    Long getId();
     String getTitle();
     String getDescription();
     String getComment();
